@@ -57,7 +57,7 @@ public class DefinitonController {
 			}
 		} else {
 			try {
-				wordO = wordRepository.findByWordIgnoreCase(word, PageRequest.of(0, 1)).get(0);
+				wordO = wordRepository.findByWordIgnoreCase(word, PageRequest.of(0, 1)).getContent().get(0);
 				if (wordO == null) {
 					throw new NoSuchElementException();
 				}
@@ -90,13 +90,28 @@ public class DefinitonController {
 		d.upvote();
 		definitionRepository.save(d);
 	}
-	
+
 	@PutMapping(path = "/{id}/downvote")
 	public void downvote(@PathVariable Integer id) {
 		Definition d = definitionRepository.findById(id).orElseThrow();
 		d.downvote();
 		definitionRepository.save(d);
 	}
+
+	@PutMapping(path = "/{id}/unupvote")
+	public void unupvote(@PathVariable Integer id) {
+		Definition d = definitionRepository.findById(id).orElseThrow();
+		d.unUpvote();
+		definitionRepository.save(d);
+	}
+
+	@PutMapping(path = "/{id}/undownvote")
+	public void undownvote(@PathVariable Integer id) {
+		Definition d = definitionRepository.findById(id).orElseThrow();
+		d.unDownvote();
+		definitionRepository.save(d);
+	}
+
 
 	@GetMapping(path = "")
 	public Iterable<Definition> getAllDefinitions( 
@@ -111,6 +126,21 @@ public class DefinitonController {
 		
 		PageRequest pageR = PageRequest.of(pageIndex, pageSize, Sort.by(Sort.Direction.DESC, sortBy));
 		return definitionRepository.findAll(pageR).getContent();
+	}
+
+	@GetMapping(path = "/paged")
+	public Iterable<Definition> getAllDefinitionsPaged( 
+			@RequestParam(required=false, defaultValue="0") Integer pageIndex,
+			@RequestParam(required=false, defaultValue="10") Integer pageSize,
+			@RequestParam(required=false, defaultValue="upvotes") String sortBy) {
+
+		if(!validSort(sortBy)) {
+			// TODO: throw error
+			return null;
+		}
+		
+		PageRequest pageR = PageRequest.of(pageIndex, pageSize, Sort.by(Sort.Direction.DESC, sortBy));
+		return definitionRepository.findAll(pageR);
 	}
 	
 	// ne znam zasto bi ovo bilo koristeno

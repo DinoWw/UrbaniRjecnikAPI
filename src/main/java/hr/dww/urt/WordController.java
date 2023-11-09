@@ -59,6 +59,15 @@ public class WordController {
 		PageRequest pageR = PageRequest.of(pageIndex, pageSize);
 		return wordRepository.findAll(pageR).getContent();
 	}
+	
+	@GetMapping(path = "/page")
+	public Iterable<Word> getAllWordsPaged(
+			@RequestParam(required=false, defaultValue="0") Integer pageIndex,
+			@RequestParam(required=false, defaultValue="10") Integer pageSize) {
+		
+		PageRequest pageR = PageRequest.of(pageIndex, pageSize);
+		return wordRepository.findAll(pageR);
+	}
 
 	@GetMapping(path = "/{id}")
 	public Word getWordById(@PathVariable Integer id) {
@@ -67,6 +76,19 @@ public class WordController {
 
 	@GetMapping(path = "/search")
 	public Iterable<Word> findContaining(
+			@RequestParam String word, 
+			@RequestParam(required=false, defaultValue="0") Integer pageIndex,
+			@RequestParam(required=false, defaultValue="10") Integer pageSize
+			) {
+
+		
+		PageRequest pageR = PageRequest.of(pageIndex, pageSize);
+		
+		return wordRepository.findByWordContainingIgnoreCase(word, pageR);
+	}
+	
+	@GetMapping(path = "/search/page")
+	public Iterable<Word> findContainingPaged(
 			@RequestParam String word, 
 			@RequestParam(required=false, defaultValue="0") Integer pageIndex,
 			@RequestParam(required=false, defaultValue="10") Integer pageSize

@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>hr.dww</groupId>
 	<artifactId>UrbaniRijecnikTest</artifactId>
-	<version>0.3.3</version>
+	<version>0.3.4</version>
 	<packaging>jar</packaging>
 	<name>UrbaniRijecnikTest</name>
 	<description>test project for spring and eclipse setup, db connection</description>

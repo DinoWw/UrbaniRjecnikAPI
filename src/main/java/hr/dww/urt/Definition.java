@@ -145,6 +145,10 @@ public void upvote() {
 	this.upvotes ++;
 }
 
+public void unUpvote() {
+	this.upvotes --;
+}
+
 public Integer getUpvotes() {
 	return this.upvotes;
 }
@@ -153,8 +157,12 @@ public Integer getDownvotes() {
 	return downvotes;
 }
 
+public void unDownvote() {
+	this.downvotes --;
+}
+
 public void downvote() {
-	downvotes ++;
+	this.downvotes ++;
 }
 
 public String getSubmitted_by_user() {
